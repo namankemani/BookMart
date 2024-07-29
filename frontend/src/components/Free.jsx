@@ -1,13 +1,27 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import list from '../../public/list.json'
+// import list from '../../public/list.json'
 import Cards from './Cards';
+import axios from "axios";
 
 const Free = () => {
-    const filterList = list.filter((data)=>data.category=="Free");
+  const [book,setBook] = useState([])
+  useEffect(()=>{
+    const getBook = async()=>{
+        try{
+          const res =  await axios.get("http://localhost:4001/all-books");
+          setBook(res.data);
+        }catch(error){
+          console.log(error);
+        }
+      };
+      getBook();
+    },[]);
+    const filterList = book.filter((data)=>data.category=="Fiction");
+    console.log(filterList);
 
     var settings = {
       dots: true,
